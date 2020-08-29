@@ -1,3 +1,9 @@
+from kivy import Config
+Config.set('graphics', 'width', '1200')
+Config.set('graphics', 'height', '800')
+Config.set('graphics', 'minimum_width', '800')
+Config.set('graphics', 'minimum_height', '600')
+
 from kivy.app import App
 from kivy.uix.widget import Widget
 from kivy.uix.button import Button
@@ -6,6 +12,8 @@ from  kivy.uix.gridlayout import GridLayout
 from kivy.graphics import Line, Color, Rectangle
 from kivy.core.window import Window
 import CheckImage
+
+
 
 class WindowArea(GridLayout):
     def __init__(self, **kwargs):
@@ -26,6 +34,7 @@ class WindowArea(GridLayout):
         
         self.submit_button = Button(text="Calculate!", font_size=40)
         self.submit_button.bind(on_press = self.submit_button_pressed)
+        self.submit_button.halign = 'center'
 
         self.clear_button = Button(text="Clear!", font_size=40)
         self.clear_button.bind(on_press = self.clear_button_pressed)
@@ -35,14 +44,19 @@ class WindowArea(GridLayout):
 
         self.add_widget(self.draw_layout)
         self.add_widget(self.buttons_layout)
+        self.draw_layout.size_hint_y = 0.7
+        self.buttons_layout.size_hint_y = 0.3
+
+
 
     def submit_button_pressed(self, instance):
         try:
-            self.submit_button.text = str(eval(self.draw_area.get_equation()))
+            self.submit_button.text = 'Równanie: ' + self.draw_area.get_equation()
+            self.submit_button.text += '\nWynik: ' + str(eval(self.draw_area.get_equation()))
         except:
             self.submit_button.text = 'Error!'
         finally:
-            self.submit_button.text += '\nPress to calculate again!'
+            self.submit_button.text += '\nPress to\ncalculate again!'
 
     def clear_button_pressed(self, instance):
         self.draw_area.clear_canvas()
